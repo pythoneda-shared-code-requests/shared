@@ -18,8 +18,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from pythoneda.shared.code_requests.cell import Cell
-
+from pythoneda.shared.code_requests import Cell
+from pythoneda import attribute
+from typing import List
 
 class CodeCell(Cell):
     """
@@ -32,12 +33,24 @@ class CodeCell(Cell):
 
     Collaborators:
         - pythoneda.shared.code_requests.cell.Cell
+        - pythoneda.shared.code_requests.dependency.Dependency
     """
 
-    def __init__(self, contents:str):
+    def __init__(self, contents:str, dependiencies:List):
         """
         Creates a new CodeCell instance.
         :param contents: The cell contents.
         :type contents: str
         """
         super().__init__(contents)
+        self._dependencies = dependencies
+
+    @property
+    @attribute
+    def dependencies(self) -> List:
+        """
+        Retrieves the dependencies needed to run the cell.
+        :return: The dependencies.
+        :rtype: List[pythoneda.shared.code_requests.dependency.Dependency]
+        """
+        return self._dependencies

@@ -18,8 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from pythoneda.shared.code_requests.cell import Cell
-
+from pythoneda.shared.code_requests import Cell
 
 class MarkdownCell(Cell):
     """

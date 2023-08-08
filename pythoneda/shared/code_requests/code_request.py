@@ -19,10 +19,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
-from pythoneda.shared.code_requests.code_cell import CodeCell
-from pythoneda.shared.code_requests.markdown_cell import MarkdownCell
-from pythoneda.value_object import ValueObject
-from typing import List
+import json
+from pythoneda.shared.code_requests import CodeCell
+from pythoneda.shared.code_requests import MarkdownCell
+from pythoneda import ValueObject
+from typing import Dict, List
 
 class CodeRequest(ValueObject, abc.ABC):
     """
@@ -76,3 +77,43 @@ class CodeRequest(ValueObject, abc.ABC):
         :type code: str
         """
         self.cells.append(CodeCell(code))
+
+    def to_dict(self) -> Dict:
+        """
+        Converts this instance into a dictionary.
+        :return: Such dictionary.
+        :rtype: Dict
+        """
+        return {
+            "cells": self.cells
+        }
+
+    @classmethod
+    def from_dict(cls, dict:Dict): # Change
+        """
+        Creates a new instance with the contents of given dictionary.
+        :param dict: The dictionary.
+        :type dict: Dict
+        :return: A CodeRequest instance.
+        :rtype: pythoneda.shared.code_requests.code_request.CodeRequest
+        """
+        return cls(dict["cells"])
+
+    def to_json(self) -> str:
+        """
+        Serializes this instance as json.
+        :return: The json text.
+        :rtype: str
+        """
+        return json.dumps(self.to_dict())
+
+    @classmethod
+    def from_json(cls, jsonText: str): # -> Change
+        """
+        Reconstructs a CodeRequest instance from given json text.
+        :param jsonText: The json text.
+        :type jsonText: str
+        :return: The CodeRequest instance.
+        :rtype: pythoneda.shared.code_requests.code_request.CodeRequest
+        """
+        return cls.from_dict(json.loads(jsonText))
