@@ -32,8 +32,8 @@ class CodeCell(Cell):
         - Represents any code fragment inside a CodeRequest.
 
     Collaborators:
-        - pythoneda.shared.code_requests.cell.Cell
-        - pythoneda.shared.code_requests.dependency.Dependency
+        - pythoneda.shared.code_requests.Cell
+        - pythoneda.shared.code_requests.Dependency
     """
 
     def __init__(self, contents:str, dependiencies:List):
@@ -51,6 +51,6 @@ class CodeCell(Cell):
         """
         Retrieves the dependencies needed to run the cell.
         :return: The dependencies.
-        :rtype: List[pythoneda.shared.code_requests.dependency.Dependency]
+        :rtype: List[pythoneda.shared.code_requests.Dependency]
         """
         return self._dependencies

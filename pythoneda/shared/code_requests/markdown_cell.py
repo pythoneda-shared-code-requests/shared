@@ -30,7 +30,7 @@ class MarkdownCell(Cell):
         - Represents any Markdown fragment inside a CodeRequest.
 
     Collaborators:
-        - pythoneda.shared.code_requests.cell.Cell
+        - pythoneda.shared.code_requests.Cell
     """
 
     def __init__(self, contents:str):

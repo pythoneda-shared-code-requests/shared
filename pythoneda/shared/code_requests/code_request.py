@@ -49,7 +49,7 @@ class CodeRequest(ValueObject, abc.ABC):
         """
         Retrieves the request cells.
         :return: Such cells.
-        :rtype: List[pythoneda.shared.code_requests.cell.Cell]
+        :rtype: List[pythoneda.shared.code_requests.Cell]
         """
         return self._cells
 
@@ -95,7 +95,7 @@ class CodeRequest(ValueObject, abc.ABC):
         :param dict: The dictionary.
         :type dict: Dict
         :return: A CodeRequest instance.
-        :rtype: pythoneda.shared.code_requests.code_request.CodeRequest
+        :rtype: pythoneda.shared.code_requests.CodeRequest
         """
         return cls(dict["cells"])
 
@@ -114,6 +114,6 @@ class CodeRequest(ValueObject, abc.ABC):
         :param jsonText: The json text.
         :type jsonText: str
         :return: The CodeRequest instance.
-        :rtype: pythoneda.shared.code_requests.code_request.CodeRequest
+        :rtype: pythoneda.shared.code_requests.CodeRequest
         """
         return cls.from_dict(json.loads(jsonText))
