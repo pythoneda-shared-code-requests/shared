@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from pythoneda.shared.code_requests import Cell
+from .cell import Cell
 from pythoneda import attribute
 from typing import List
 
@@ -26,7 +26,7 @@ class CodeCell(Cell):
     """
     A code cell in a code request.
 
-    Class name: Cell
+    Class name: CodeCell
 
     Responsibilities:
         - Represents any code fragment inside a CodeRequest.
@@ -36,11 +36,13 @@ class CodeCell(Cell):
         - pythoneda.shared.code_requests.Dependency
     """
 
-    def __init__(self, contents:str, dependiencies:List):
+    def __init__(self, contents:str, dependencies:List):
         """
         Creates a new CodeCell instance.
         :param contents: The cell contents.
         :type contents: str
+        :param dependencies: The dependencies.
+        :type dependencies: List[pythoneda.shared.code_requests.Dependency]
         """
         super().__init__(contents)
         self._dependencies = dependencies

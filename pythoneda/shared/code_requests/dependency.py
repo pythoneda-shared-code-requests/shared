@@ -24,13 +24,13 @@ class Dependency(ValueObject):
     """
     A dependency required to run a code cell in a code request.
 
-    Class name: Cell
+    Class name: Dependency
 
     Responsibilities:
         - Contains metadata about a dependency required by a code cell.
 
     Collaborators:
-        - pythoneda.value_object.ValueObject
+        - pythoneda.ValueObject
     """
 
     def __init__(self, name:str, version:str, url:str):

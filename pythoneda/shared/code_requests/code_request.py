@@ -18,9 +18,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+from .code_cell import CodeCell
 import abc
+import importlib
 import json
-from pythoneda.shared.code_requests import CodeCell
 from pythoneda.shared.code_requests import MarkdownCell
 from pythoneda import ValueObject
 from typing import Dict, List
@@ -62,21 +63,35 @@ class CodeRequest(ValueObject, abc.ABC):
         """
         raise Error("write(file) should be implemented in subclasses")
 
-    def append_markdown(self, txt: str):
+    def append_markdown(self, markdown:str):
         """
         Appends a new markdown cell.
-        :param txt: The text to add.
-        :type txt: str
+        :param text: The text to add.
+        :type text: str
         """
-        self.cells.append(MarkdownCell(txt))
+        self.cells.append(MarkdownCell(markdown))
 
-    def append_code(self, code: str):
+    def append_code(self, code:str, dependencies:List):
         """
         Appends a new code cell.
         :param code: The code to add.
         :type code: str
+        :param dependencies: The code dependencies.
+        :type dependencies: List
         """
-        self.cells.append(CodeCell(code))
+        self.cells.append(CodeCell(code, dependencies))
+
+    def dependencies(self) -> List:
+        """
+        Retrieves the dependencies of this code request.
+        :return: Such list.
+        :rtype: List[pythoneda.shared.code_requests.Dependency]
+        """
+        result = {}
+        for cell in self.cells:
+            result.update(cell.dependencies())
+
+        return list(result)
 
     def to_dict(self) -> Dict:
         """
@@ -85,11 +100,11 @@ class CodeRequest(ValueObject, abc.ABC):
         :rtype: Dict
         """
         return {
-            "cells": self.cells
+            "cells": [cell.to_dict() for cell in self.cells]
         }
 
     @classmethod
-    def from_dict(cls, dict:Dict): # Change
+    def from_dict(cls, dict:Dict): # CodeRequest
         """
         Creates a new instance with the contents of given dictionary.
         :param dict: The dictionary.
@@ -97,7 +112,10 @@ class CodeRequest(ValueObject, abc.ABC):
         :return: A CodeRequest instance.
         :rtype: pythoneda.shared.code_requests.CodeRequest
         """
-        return cls(dict["cells"])
+        module_name, class_name = dict["_internal"]["class"].rsplit('.', 1)
+        module = importlib.import_module(module_name)
+        actual_class = getattr(module, class_name)
+        return actual_class.from_dict(dict)
 
     def to_json(self) -> str:
         """
@@ -108,7 +126,7 @@ class CodeRequest(ValueObject, abc.ABC):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, jsonText: str): # -> Change
+    def from_json(cls, jsonText: str): # -> CodeRequest
         """
         Reconstructs a CodeRequest instance from given json text.
         :param jsonText: The json text.
@@ -117,3 +135,9 @@ class CodeRequest(ValueObject, abc.ABC):
         :rtype: pythoneda.shared.code_requests.CodeRequest
         """
         return cls.from_dict(json.loads(jsonText))
+
+    async def run(self):
+        """
+        Runs this code request.
+        """
+        pass
