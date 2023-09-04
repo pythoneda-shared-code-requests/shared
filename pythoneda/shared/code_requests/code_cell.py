@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .cell import Cell
+from .dependency import Dependency
 from pythoneda import attribute
 from typing import List
 
@@ -47,6 +48,15 @@ class CodeCell(Cell):
         super().__init__(contents)
         self._dependencies = dependencies
 
+    @classmethod
+    def empty(cls):
+        """
+        Builds an empty instance. Required for unmarshalling.
+        :return: An empty instance.
+        :rtype: pythoneda.shared.code_requests.CodeCell
+        """
+        return cls(None, [])
+
     @property
     @attribute
     def dependencies(self) -> List:
@@ -56,3 +66,31 @@ class CodeCell(Cell):
         :rtype: List[pythoneda.shared.code_requests.Dependency]
         """
         return self._dependencies
+
+    def _set_attribute_from_json(self, varName, varValue):
+        """
+        Changes the value of an attribute of this instance.
+        :param varName: The name of the attribute.
+        :type varName: str
+        :param varValue: The value of the attribute.
+        :type varValue: int, bool, str, type
+        """
+        if varName == 'dependencies':
+            self._dependencies = [Dependency.from_dict(value) for value in varValue]
+        else:
+            super()._set_attribute_from_json(varName, varValue)
+
+    def _get_attribute_to_json(self, varName) -> str:
+        """
+        Retrieves the value of an attribute of this instance, as Json.
+        :param varName: The name of the attribute.
+        :type varName: str
+        :return: The attribute value in json format.
+        :rtype: str
+        """
+        result = None
+        if varName == 'dependencies':
+            result = [dependency.to_dict() for dependency in self._dependencies]
+        else:
+            result = super()._get_attribute_to_json(varName)
+        return result

@@ -22,6 +22,7 @@ from .cell import Cell
 from .code_cell import CodeCell
 from .markdown_cell import MarkdownCell
 from .dependency import Dependency
+from .pythoneda_dependency import PythonedaDependency
 from .code_request import CodeRequest
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)

@@ -18,12 +18,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+from .cell import Cell
 from .code_cell import CodeCell
 import abc
 import importlib
 import json
 from pythoneda.shared.code_requests import MarkdownCell
-from pythoneda import ValueObject
+from pythoneda import attribute, ValueObject
 from typing import Dict, List
 
 class CodeRequest(ValueObject, abc.ABC):
@@ -45,7 +46,17 @@ class CodeRequest(ValueObject, abc.ABC):
         super().__init__()
         self._cells = []
 
+    @classmethod
+    def empty(cls):
+        """
+        Builds an empty instance. Required for unmarshalling.
+        :return: An empty instance.
+        :rtype: pythoneda.shared.code_requests.CodeRequest
+        """
+        return cls()
+
     @property
+    @attribute
     def cells(self) -> List:
         """
         Retrieves the request cells.
@@ -81,60 +92,47 @@ class CodeRequest(ValueObject, abc.ABC):
         """
         self.cells.append(CodeCell(code, dependencies))
 
+    @property
     def dependencies(self) -> List:
         """
         Retrieves the dependencies of this code request.
         :return: Such list.
         :rtype: List[pythoneda.shared.code_requests.Dependency]
         """
-        result = {}
+        result = set()
         for cell in self.cells:
-            result.update(cell.dependencies())
+            for dep in cell.dependencies:
+                result.update(cell.dependencies)
 
         return list(result)
 
-    def to_dict(self) -> Dict:
+    def _set_attribute_from_json(self, varName, varValue):
         """
-        Converts this instance into a dictionary.
-        :return: Such dictionary.
-        :rtype: Dict
+        Changes the value of an attribute of this instance.
+        :param varName: The name of the attribute.
+        :type varName: str
+        :param varValue: The value of the attribute.
+        :type varValue: int, bool, str, type
         """
-        return {
-            "cells": [cell.to_dict() for cell in self.cells]
-        }
+        if varName == 'cells':
+            self._cells = [Cell.from_dict(value) for value in varValue]
+        else:
+            super()._set_attribute_from_json(varName, varValue)
 
-    @classmethod
-    def from_dict(cls, dict:Dict): # CodeRequest
+    def _get_attribute_to_json(self, varName) -> str:
         """
-        Creates a new instance with the contents of given dictionary.
-        :param dict: The dictionary.
-        :type dict: Dict
-        :return: A CodeRequest instance.
-        :rtype: pythoneda.shared.code_requests.CodeRequest
-        """
-        module_name, class_name = dict["_internal"]["class"].rsplit('.', 1)
-        module = importlib.import_module(module_name)
-        actual_class = getattr(module, class_name)
-        return actual_class.from_dict(dict)
-
-    def to_json(self) -> str:
-        """
-        Serializes this instance as json.
-        :return: The json text.
+        Retrieves the value of an attribute of this instance, as Json.
+        :param varName: The name of the attribute.
+        :type varName: str
+        :return: The attribute value in json format.
         :rtype: str
         """
-        return json.dumps(self.to_dict())
-
-    @classmethod
-    def from_json(cls, jsonText: str): # -> CodeRequest
-        """
-        Reconstructs a CodeRequest instance from given json text.
-        :param jsonText: The json text.
-        :type jsonText: str
-        :return: The CodeRequest instance.
-        :rtype: pythoneda.shared.code_requests.CodeRequest
-        """
-        return cls.from_dict(json.loads(jsonText))
+        result = None
+        if varName == 'cells':
+            result = [cell.to_dict() for cell in self._cells]
+        else:
+            result = super()._get_attribute_to_json(varName)
+        return result
 
     async def run(self):
         """

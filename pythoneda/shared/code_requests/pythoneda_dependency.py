@@ -1,7 +1,7 @@
 """
-pythoneda/shared/code_requests/markdown_cell.py
+pythoneda/shared/code_requests/pythoneda_dependency.py
 
-This file declares the MarkdownCell class.
+This file declares the PythonedaDependency class.
 
 Copyright (C) 2023-today rydnr's pythoneda-shared-code-requests/shared
 
@@ -18,34 +18,38 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from .cell import Cell
+from .dependency import Dependency
 
-class MarkdownCell(Cell):
+class PythonedaDependency(Dependency):
     """
-    A Markdown cell in a code request.
+    A PythonEDA dependency.
 
-    Class name: MarkdownCell
+    Class name: PythonedaDependency
 
     Responsibilities:
-        - Represents any Markdown fragment inside a CodeRequest.
+        - Used to label PythonEDA dependencies.
 
     Collaborators:
-        - pythoneda.shared.code_requests.Cell
+        - None
     """
 
-    def __init__(self, contents:str):
+    def __init__(self, name: str, version: str, url: str):
         """
-        Creates a new MarkdownCell instance.
-        :param contents: The cell contents.
-        :type contents: str
+        Creates a new PythonedaDependency instance.
+        :param name: The name of the dependency.
+        :type name: str
+        :param version: The version of the dependency.
+        :type version: str
+        :param url: The url of the dependency.
+        :type url: str
         """
-        super().__init__(contents)
+        super().__init__(name, version, url)
 
     @classmethod
     def empty(cls):
         """
         Builds an empty instance. Required for unmarshalling.
         :return: An empty instance.
-        :rtype: pythoneda.shared.code_requests.MarkdownCell
+        :rtype: pythoneda.shared.code_requests.PythonedaDependency
         """
-        return cls(None)
+        return cls(None, None, None)

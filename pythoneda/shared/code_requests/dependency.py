@@ -48,6 +48,15 @@ class Dependency(ValueObject):
         self._version = version
         self._url = url
 
+    @classmethod
+    def empty(cls):
+        """
+        Builds an empty instance. Required for unmarshalling.
+        :return: An empty instance.
+        :rtype: pythoneda.shared.code_requests.Dependency
+        """
+        return cls(None, None, None)
+
     @property
     @primary_key_attribute
     def name(self) -> str:

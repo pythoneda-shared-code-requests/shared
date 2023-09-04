@@ -44,6 +44,15 @@ class Cell(ValueObject, abc.ABC):
         super().__init__()
         self._contents = contents
 
+    @classmethod
+    def empty(cls):
+        """
+        Builds an empty instance. Required for unmarshalling.
+        :return: An empty instance.
+        :rtype: pythoneda.shared.code_requests.Cell
+        """
+        return cls(None)
+
     @property
     @primary_key_attribute
     def contents(self) -> str:
@@ -53,47 +62,6 @@ class Cell(ValueObject, abc.ABC):
         :rtype: str
         """
         return self._contents
-
-    def to_dict(self) -> Dict:
-        """
-        Converts this instance into a dictionary.
-        :return: Such dictionary.
-        :rtype: Dict
-        """
-        return {
-            "class": self.__class__.full_class_name(),
-            "contents": self.contents
-        }
-
-    @classmethod
-    def from_dict(cls, dict:Dict): # Cell
-        """
-        Creates a new instance with the contents of given dictionary.
-        :param dict: The dictionary.
-        :type dict: Dict
-        :return: A Cell instance.
-        :rtype: pythoneda.shared.code_requests.Cell
-        """
-        return dict["class"](dict["contents"])
-
-    def to_json(self) -> str:
-        """
-        Serializes this instance as json.
-        :return: The json text.
-        :rtype: str
-        """
-        return json.dumps(self.to_dict())
-
-    @classmethod
-    def from_json(cls, jsonText: str): # -> Cell
-        """
-        Reconstructs a CodeRequest instance from given json text.
-        :param jsonText: The json text.
-        :type jsonText: str
-        :return: The Cell instance.
-        :rtype: pythoneda.shared.code_requests.Cell
-        """
-        return cls.from_dict(json.loads(jsonText))
 
     @property
     def dependencies(self) -> List:
