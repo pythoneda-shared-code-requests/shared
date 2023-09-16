@@ -65,6 +65,16 @@ class CodeRequest(ValueObject, abc.ABC):
         """
         return self._cells
 
+    @property
+    @abc.abstractmethod
+    def nix_flake_spec(self):
+        """
+        Retrieves the specification for the Nix flake.
+        :return: Such specification.
+        :rtype: pythoneda.shared.nix_flake.NixFlakeSpec
+        """
+        raise NotImplementedError("nix_flake_spec() property should be implemented in subclasses")
+
     @abc.abstractmethod
     def write(self, file):
         """
@@ -72,7 +82,7 @@ class CodeRequest(ValueObject, abc.ABC):
         :param file: The file to write.
         :type file: File
         """
-        raise Error("write(file) should be implemented in subclasses")
+        raise NotImplementedError("write(file) should be implemented in subclasses")
 
     def append_markdown(self, markdown:str):
         """

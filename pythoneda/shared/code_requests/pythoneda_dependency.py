@@ -33,7 +33,7 @@ class PythonedaDependency(Dependency):
         - None
     """
 
-    def __init__(self, name: str, version: str, url: str):
+    def __init__(self, name: str, version: str, url:str=None):
         """
         Creates a new PythonedaDependency instance.
         :param name: The name of the dependency.

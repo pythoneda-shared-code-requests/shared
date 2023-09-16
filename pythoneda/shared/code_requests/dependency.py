@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from pythoneda import attribute, primary_key_attribute, ValueObject
+from pythoneda.shared.nix_flake import NixFlake
 
 class Dependency(ValueObject):
     """
@@ -86,3 +87,12 @@ class Dependency(ValueObject):
         :rtype: str
         """
         return self._url
+
+    @classmethod
+    def from_nix_flake(cls, flake:NixFlake):
+        """
+        Creates a dependency for given Nix flake.
+        :param flake: The Nix flake.
+        :type flake: pythoneda.shared.nix_flake.NixFlake
+        """
+        return cls(flake.name, flake.version, flake.url)
