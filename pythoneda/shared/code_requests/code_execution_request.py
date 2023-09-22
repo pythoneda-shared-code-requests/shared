@@ -1,7 +1,7 @@
 """
-pythoneda/shared/code_requests/code_request_nix_flake_spec.py
+pythoneda/shared/code_requests/code_execution_request.py
 
-This file declares the CodeRequestNixFlakeSpec class.
+This file declares the CodeExecutionRequest class.
 
 Copyright (C) 2023-today rydnr's pythoneda-shared-code-requests/shared
 
@@ -19,48 +19,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .code_request import CodeRequest
-from pythoneda import attribute
-from pythoneda.shared.nix_flake import NixFlakeSpec
-from typing import List
+from .code_request_nix_flake_spec import CodeRequestNixFlakeSpec
+from pythoneda import primary_key_attribute
 
-class CodeRequestNixFlakeSpec(NixFlakeSpec):
+class CodeExecutionRequest(CodeRequest):
     """
-    Specifies Nix flakes wrapping a code request.
+    Request to execute code.
 
-    Class name: CodeRequestNixFlakeSpec
+    Class name: CodeExecutionRequest
 
     Responsibilities:
-        - Provides conditions on Nix flakes wrapping code requests.
+        - Represents a cohesive piece of code.
 
     Collaborators:
-        - pythoneda.shared.nix_flake.NixFlakeSpec
+        - None
     """
 
-    def __init__(
-            self,
-            codeRequest: CodeRequest,
-            name: str,
-            versionSpec: str = None,
-            url: str = None,
-            inputSpecs: List = []):
+    def __init__(self, codeRequest: CodeRequest):
         """
-        Creates a new CodeRequestNixFlakeSpec instance.
-        :param codeRequest: The code request.
+        Creates a new CodeExecutionRequest instance.
+        :param codeRequest: The original code request.
         :type codeRequest: pythoneda.shared.code_requests.CodeRequest
-        :param name: The name of the flake.
-        :type name: str
-        :param versionSpec: The version of the flake.
-        :type versionSpec: str
-        :param url: The url.
-        :type url: str
-        :param inputSpecs: The flake specs.
-        :type inputSpecs: List[pythoneda.shared.nix_flake.NixFlakeSpec]
         """
-        super().__init__(
-            name,
-            versionSpec,
-            url,
-            inputSpecs)
+        super().__init__()
         self._code_request = codeRequest
 
     @classmethod
@@ -68,19 +49,36 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         """
         Builds an empty instance. Required for unmarshalling.
         :return: An empty instance.
-        :rtype: pythoneda.shared.code_requests.CodeRequestNixFlake
+        :rtype: pythoneda.shared.code_requests.CodeRequest
         """
-        return cls(None, None)
+        return cls(None)
 
     @property
-    @attribute
+    @primary_key_attribute
     def code_request(self) -> CodeRequest:
         """
         Retrieves the code request.
-        :return: Such instance.
+        :return: The original code request.
         :rtype: pythoneda.shared.code_requests.CodeRequest
         """
         return self._code_request
+
+    @property
+    def nix_flake_spec(self):
+        """
+        Retrieves the specification for the Nix flake.
+        :return: Such specification.
+        :rtype: pythoneda.shared.nix_flake.NixFlakeSpec
+        """
+        return CodeRequestNixFlakeSpec(self.code_request, "code-request")
+
+    def write(self, file):
+        """
+        Writes the code request to a file.
+        :param file: The file to write.
+        :type file: File
+        """
+        self.code_request.write(file)
 
     def _set_attribute_from_json(self, varName, varValue):
         """
@@ -90,7 +88,7 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         :param varValue: The value of the attribute.
         :type varValue: int, bool, str, type
         """
-        if varName == 'code_request':
+        if varName == "code_request":
             self._code_request = CodeRequest.from_dict(varValue)
         else:
             super()._set_attribute_from_json(varName, varValue)
@@ -104,8 +102,14 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         :rtype: str
         """
         result = None
-        if varName == 'code_request':
-            result = self._code_request.to_dict()
+        if varName == "code_request":
+            result = self.code_request.to_dict()
         else:
             result = super()._get_attribute_to_json(varName)
         return result
+
+    async def run(self):
+        """
+        Runs this code request.
+        """
+        await self.code_request.run()

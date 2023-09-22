@@ -49,7 +49,8 @@ class CodeRequestNixFlake(NixFlake):
             licenseId:str,
             maintainers:List,
             copyrightYear:int,
-            copyrightHolder:str):
+            copyrightHolder:str,
+            templateGroup:str="code_requests"):
         """
         Creates a new CodeRequestNixFlake instance.
         :param codeRequest: The code request.
@@ -64,6 +65,8 @@ class CodeRequestNixFlake(NixFlake):
         :type inputs: List[pythoneda.shared.nix_flake.NixFlakeInput]
         :param description: The flake description.
         :type description: str
+        :param templateGroup: The template group.
+        :type templateGroup: str
         :param homepage: The project's homepage.
         :type homepage: str
         :param licenseId: The id of the license of the project.
@@ -80,7 +83,7 @@ class CodeRequestNixFlake(NixFlake):
             version,
             url,
             inputs,
-            "code_requests",
+            templateGroup,
             description,
             homepage,
             licenseId,
@@ -151,3 +154,31 @@ class CodeRequestNixFlake(NixFlake):
         :type gitAdd: pythoneda.shared.git.GitAdd
         """
         gitAdd.add("pyprojecttoml.template")
+
+    def _set_attribute_from_json(self, varName, varValue):
+        """
+        Changes the value of an attribute of this instance.
+        :param varName: The name of the attribute.
+        :type varName: str
+        :param varValue: The value of the attribute.
+        :type varValue: int, bool, str, type
+        """
+        if varName == "code_request":
+            self._code_request = CodeRequest.from_dict(varValue)
+        else:
+            super()._set_attribute_from_json(varName, varValue)
+
+    def _get_attribute_to_json(self, varName) -> str:
+        """
+        Retrieves the value of an attribute of this instance, as Json.
+        :param varName: The name of the attribute.
+        :type varName: str
+        :return: The attribute value in json format.
+        :rtype: str
+        """
+        result = None
+        if varName == "code_request":
+            result = self.code_request.to_dict()
+        else:
+            result = super()._get_attribute_to_json(varName)
+        return result
