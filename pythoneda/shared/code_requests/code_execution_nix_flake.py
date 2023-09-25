@@ -83,6 +83,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         """
         super().generate_files(flakeFolder)
         self.generate_code(flakeFolder)
+        self.generate_entrypoint(flakeFolder)
 
     def generate_code(self, flakeFolder:str):
         """
@@ -90,13 +91,25 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         :param flakeFolder: The flake folder.
         :type flakeFolder: str
         """
-        print('cells:')
-        for cell in [cell for cell in self.code_request.cells if isinstance(cell, CodeCell)]:
-            print(cell.contents)
-        print('finished')
         with open(Path(flakeFolder) / "code_request.py", "w") as output_file:
-            for cell in [cell for cell in self.code_request.cells if isinstance(cell, CodeCell)]:
-                output_file.write(cell.contents)
+            for cell in self.code_request.cells:
+                if isinstance(cell, CodeCell):
+                    output_file.write('\nprint("```")\n')
+                    for line in [line for line in cell.contents.splitlines() if line.rstrip()]:
+                        output_file.write(f'print({repr(line)})\n')
+                    output_file.write('print("```")\n')
+                    output_file.write(cell.contents)
+                else:
+                    for line in cell.contents.splitlines():
+                        output_file.write(f'\nprint({repr(line)})')
+
+    def generate_entrypoint(self, flakeFolder:str):
+        """
+        Generates the entrypoint.sh file.
+        :param flakeFolder: The flake folder.
+        :type flakeFolder: str
+        """
+        self.process_template(flakeFolder, "EntrypointSh", Path(self.templates_folder()) / self.template_subfolder, "root", "code-execution.sh")
 
     def git_add_files(self, gitAdd:GitAdd):
         """
@@ -106,11 +119,20 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         """
         super().git_add_files(gitAdd)
         self.git_add_code(gitAdd)
+        self.git_add_entrypoint(gitAdd)
 
     def git_add_code(self, gitAdd:GitAdd):
         """
-        Adds the generated code.py file to git.
+        Adds the generated code_request.py file to git.
         :param gitAdd: The GitAdd instance.
         :type gitAdd: pythoneda.shared.git.GitAdd
         """
         gitAdd.add("code_request.py")
+
+    def git_add_entrypoint(self, gitAdd:GitAdd):
+        """
+        Adds the generated entrypoint.sh file to git.
+        :param gitAdd: The GitAdd instance.
+        :type gitAdd: pythoneda.shared.git.GitAdd
+        """
+        gitAdd.add("code-execution.sh")
