@@ -92,16 +92,24 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         :type flakeFolder: str
         """
         with open(Path(flakeFolder) / "code_request.py", "w") as output_file:
+            output_file.write('_pythoneda_no_error_so_far = True\n')
             for cell in self.code_request.cells:
                 if isinstance(cell, CodeCell):
-                    output_file.write('\nprint("```")\n')
+                    # TODO: find a non-hardcoded way to prevent the script to continue
+                    output_file.write('\nif _pythoneda_no_error_so_far:')
+                    output_file.write('\n    print("```")\n')
                     for line in [line for line in cell.contents.splitlines() if line.rstrip()]:
-                        output_file.write(f'print({repr(line)})\n')
-                    output_file.write('print("```")\n')
-                    output_file.write(cell.contents)
+                        output_file.write(f'    print({repr(line)})\n')
+                    output_file.write('    print("```")\n')
+                    for line in [line for line in cell.contents.splitlines() if line.rstrip()]:
+                        output_file.write(f'    {line}\n')
                 else:
+                    first_time = True
                     for line in cell.contents.splitlines():
-                        output_file.write(f'\nprint({repr(line)})')
+                        if first_time:
+                            output_file.write('\nif _pythoneda_no_error_so_far:')
+                            first_time = False
+                        output_file.write(f'\n    print({repr(line)})')
 
     def generate_entrypoint(self, flakeFolder:str):
         """
