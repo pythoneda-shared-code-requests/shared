@@ -19,9 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
-import json
 from pythoneda import primary_key_attribute, ValueObject
-from typing import Dict, List
+from typing import List
+
 
 class Cell(ValueObject, abc.ABC):
     """
@@ -35,7 +35,7 @@ class Cell(ValueObject, abc.ABC):
     Collaborators:
         - None
     """
-    def __init__(self, contents:str):
+    def __init__(self, contents: str):
         """
         Creates a new Cell instance.
         :param contents: The cell contents.

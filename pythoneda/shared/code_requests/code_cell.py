@@ -23,6 +23,7 @@ from .dependency import Dependency
 from pythoneda import attribute
 from typing import List
 
+
 class CodeCell(Cell):
     """
     A code cell in a code request.
@@ -37,7 +38,7 @@ class CodeCell(Cell):
         - pythoneda.shared.code_requests.Dependency
     """
 
-    def __init__(self, contents:str, dependencies:List):
+    def __init__(self, contents: str, dependencies: List):
         """
         Creates a new CodeCell instance.
         :param contents: The cell contents.
@@ -88,7 +89,6 @@ class CodeCell(Cell):
         :return: The attribute value in json format.
         :rtype: str
         """
-        result = None
         if varName == 'dependencies':
             result = [dependency.to_dict() for dependency in self._dependencies]
         else:

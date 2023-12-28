@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from pythoneda import attribute, primary_key_attribute, ValueObject
 from pythoneda.shared.nix_flake import NixFlake
 
+
 class Dependency(ValueObject):
     """
     A dependency required to run a code cell in a code request.
@@ -34,7 +35,7 @@ class Dependency(ValueObject):
         - pythoneda.ValueObject
     """
 
-    def __init__(self, name:str, version:str, url:str):
+    def __init__(self, name: str, version: str, url: str):
         """
         Creates a new Dependency instance.
         :param name: The name of the dependency.
@@ -89,7 +90,7 @@ class Dependency(ValueObject):
         return self._url
 
     @classmethod
-    def from_nix_flake(cls, flake:NixFlake):
+    def from_nix_flake(cls, flake: NixFlake):
         """
         Creates a dependency for given Nix flake.
         :param flake: The Nix flake.

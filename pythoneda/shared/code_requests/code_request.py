@@ -21,11 +21,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from .cell import Cell
 from .code_cell import CodeCell
 import abc
-import importlib
-import json
 from pythoneda.shared.code_requests import MarkdownCell
 from pythoneda import attribute, ValueObject
-from typing import Dict, List
+from typing import List
+
 
 class CodeRequest(ValueObject, abc.ABC):
     """
@@ -84,15 +83,15 @@ class CodeRequest(ValueObject, abc.ABC):
         """
         raise NotImplementedError("write(file) should be implemented in subclasses")
 
-    def append_markdown(self, markdown:str):
+    def append_markdown(self, markdown: str):
         """
         Appends a new markdown cell.
-        :param text: The text to add.
-        :type text: str
+        :param markdown: The text to add.
+        :type markdown: str
         """
         self.cells.append(MarkdownCell(markdown))
 
-    def append_code(self, code:str, dependencies:List):
+    def append_code(self, code: str, dependencies: List):
         """
         Appends a new code cell.
         :param code: The code to add.
@@ -112,7 +111,7 @@ class CodeRequest(ValueObject, abc.ABC):
         result = set()
         for cell in self.cells:
             for dep in cell.dependencies:
-                result.update(cell.dependencies)
+                result.update(dep)
 
         return list(result)
 
@@ -137,7 +136,6 @@ class CodeRequest(ValueObject, abc.ABC):
         :return: The attribute value in json format.
         :rtype: str
         """
-        result = None
         if varName == 'cells':
             result = [cell.to_dict() for cell in self._cells]
         else:

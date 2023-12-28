@@ -18,16 +18,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from .cell import Cell
 from .code_cell import CodeCell
 from .code_request import CodeRequest
 from .code_request_nix_flake import CodeRequestNixFlake
 from pathlib import Path
-from pythoneda import primary_key_attribute
 from pythoneda.shared.git import GitAdd
-from pythoneda.shared.nix_flake import NixFlakeSpec
 from pythoneda.shared.nix_flake.licenses import Gpl3
 from typing import List
+
 
 class CodeExecutionNixFlake(CodeRequestNixFlake):
 
@@ -42,13 +40,11 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
     Collaborators:
         - None
     """
-    def __init__(self, codeRequest:CodeRequest, inputs:List):
+    def __init__(self, codeRequest: CodeRequest, inputs: List):
         """
         Creates a new CodeRequestNixFlake instance.
         :param codeRequest: The code request.
         :type codeRequest: pythoneda.shared.code_requests.CodeRequest
-        :param version: The version of the flake.
-        :type version: str
         :param inputs: The resolved dependencies as NixFlakes.
         :type inputs: List
         """
@@ -61,7 +57,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
             "Executes a PythonEDA Code Request",
             "https://github.com/pythoneda-shared-code-requests/shared",
             Gpl3.license_type(),
-            [ "rydnr <github@acm-sl.org>" ],
+            ["rydnr <github@acm-sl.org>"],
             2023,
             "rydnr",
             "code_execution")
@@ -75,7 +71,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         """
         return cls(None, [])
 
-    def generate_files(self, flakeFolder:str):
+    def generate_files(self, flakeFolder: str):
         """
         Generates the files.
         :param flakeFolder: The flake folder.
@@ -85,7 +81,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         self.generate_code(flakeFolder)
         self.generate_entrypoint(flakeFolder)
 
-    def generate_code(self, flakeFolder:str):
+    def generate_code(self, flakeFolder: str):
         """
         Generates the code.py file.
         :param flakeFolder: The flake folder.
@@ -111,15 +107,20 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
                             first_time = False
                         output_file.write(f'\n    print({repr(line)})')
 
-    def generate_entrypoint(self, flakeFolder:str):
+    def generate_entrypoint(self, flakeFolder: str):
         """
         Generates the entrypoint.sh file.
         :param flakeFolder: The flake folder.
         :type flakeFolder: str
         """
-        self.process_template(flakeFolder, "EntrypointSh", Path(self.templates_folder()) / self.template_subfolder, "root", "code-execution.sh")
+        self.process_template(
+            flakeFolder,
+            "EntrypointSh",
+            Path(self.templates_folder()) / self.template_subfolder,
+            "root",
+            "code-execution.sh")
 
-    def git_add_files(self, gitAdd:GitAdd):
+    def git_add_files(self, gitAdd: GitAdd):
         """
         Adds the generated files to git.
         :param gitAdd: The GitAdd instance.
@@ -129,7 +130,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         self.git_add_code(gitAdd)
         self.git_add_entrypoint(gitAdd)
 
-    def git_add_code(self, gitAdd:GitAdd):
+    def git_add_code(self, gitAdd: GitAdd):
         """
         Adds the generated code_request.py file to git.
         :param gitAdd: The GitAdd instance.
@@ -137,7 +138,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         """
         gitAdd.add("code_request.py")
 
-    def git_add_entrypoint(self, gitAdd:GitAdd):
+    def git_add_entrypoint(self, gitAdd: GitAdd):
         """
         Adds the generated entrypoint.sh file to git.
         :param gitAdd: The GitAdd instance.

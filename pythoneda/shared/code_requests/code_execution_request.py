@@ -22,6 +22,7 @@ from .code_request import CodeRequest
 from .code_request_nix_flake_spec import CodeRequestNixFlakeSpec
 from pythoneda import primary_key_attribute
 
+
 class CodeExecutionRequest(CodeRequest):
     """
     Request to execute code.
@@ -101,7 +102,6 @@ class CodeExecutionRequest(CodeRequest):
         :return: The attribute value in json format.
         :rtype: str
         """
-        result = None
         if varName == "code_request":
             result = self.code_request.to_dict()
         else:

@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .dependency import Dependency
 
+
 class PythonedaDependency(Dependency):
     """
     A PythonEDA dependency.
@@ -33,7 +34,7 @@ class PythonedaDependency(Dependency):
         - None
     """
 
-    def __init__(self, name: str, version: str, url:str=None):
+    def __init__(self, name: str, version: str, url: str = None):
         """
         Creates a new PythonedaDependency instance.
         :param name: The name of the dependency.

@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .cell import Cell
 
+
 class MarkdownCell(Cell):
     """
     A Markdown cell in a code request.
@@ -33,7 +34,7 @@ class MarkdownCell(Cell):
         - pythoneda.shared.code_requests.Cell
     """
 
-    def __init__(self, contents:str):
+    def __init__(self, contents: str):
         """
         Creates a new MarkdownCell instance.
         :param contents: The cell contents.

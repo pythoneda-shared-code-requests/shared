@@ -24,6 +24,7 @@ from pythoneda import attribute
 from pythoneda.shared.nix_flake import NixFlake
 from typing import List
 
+
 class CodeRequestNixFlake(NixFlake):
     """
     A nix flake wrapping a code request.
@@ -39,18 +40,18 @@ class CodeRequestNixFlake(NixFlake):
 
     def __init__(
             self,
-            codeRequest:CodeRequest,
-            name:str,
-            version:str,
-            url:str,
-            inputs:List,
-            description:str,
-            homepage:str,
-            licenseId:str,
-            maintainers:List,
-            copyrightYear:int,
-            copyrightHolder:str,
-            templateGroup:str="code_requests"):
+            codeRequest: CodeRequest,
+            name: str,
+            version: str,
+            url: str,
+            inputs: List,
+            description: str,
+            homepage: str,
+            licenseId: str,
+            maintainers: List,
+            copyrightYear: int,
+            copyrightHolder: str,
+            templateGroup: str = "code_requests"):
         """
         Creates a new CodeRequestNixFlake instance.
         :param codeRequest: The code request.
@@ -119,9 +120,9 @@ class CodeRequestNixFlake(NixFlake):
         :return: Such inputs.
         :rtype: List[pythoneda.shared.nix_flake.NixFlake]
         """
-        return [ input for input in self.inputs if input.name != "nixos" and input.name != "flake-utils" ]
+        return [aux for aux in self.inputs if aux.name != "nixos" and aux.name != "flake-utils"]
 
-    def generate_files(self, flakeFolder:str):
+    def generate_files(self, flakeFolder: str):
         """
         Generates the files.
         :param flakeFolder: The flake folder.
@@ -130,13 +131,18 @@ class CodeRequestNixFlake(NixFlake):
         self.generate_flake(flakeFolder)
         self.generate_pyprojecttoml_template(flakeFolder)
 
-    def generate_pyprojecttoml_template(self, flakeFolder:str):
+    def generate_pyprojecttoml_template(self, flakeFolder: str):
         """
         Generates the pyprojecttoml.template from a template.
         :param flakeFolder: The flake folder.
         :type flakeFolder: str
         """
-        self.process_template(flakeFolder, "PyprojecttomlTemplate", Path(self.templates_folder()) / self.template_subfolder, "root", "pyprojecttoml.template")
+        self.process_template(
+            flakeFolder,
+            "PyprojecttomlTemplate",
+            Path(self.templates_folder()) / self.template_subfolder,
+            "root",
+            "pyprojecttoml.template")
 
     def git_add_files(self, gitAdd):
         """
@@ -176,7 +182,6 @@ class CodeRequestNixFlake(NixFlake):
         :return: The attribute value in json format.
         :rtype: str
         """
-        result = None
         if varName == "code_request":
             result = self.code_request.to_dict()
         else:

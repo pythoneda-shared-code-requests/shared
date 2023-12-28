@@ -23,6 +23,7 @@ from pythoneda import attribute
 from pythoneda.shared.nix_flake import NixFlakeSpec
 from typing import List
 
+
 class CodeRequestNixFlakeSpec(NixFlakeSpec):
     """
     Specifies Nix flakes wrapping a code request.
@@ -103,7 +104,6 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         :return: The attribute value in json format.
         :rtype: str
         """
-        result = None
         if varName == 'code_request':
             result = self._code_request.to_dict()
         else:
