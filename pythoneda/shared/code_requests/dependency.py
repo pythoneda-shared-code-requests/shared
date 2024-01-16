@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/dependency.py
 
@@ -18,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from pythoneda import attribute, primary_key_attribute, ValueObject
+from pythoneda.shared import attribute, primary_key_attribute, ValueObject
 from pythoneda.shared.nix_flake import NixFlake
 
 
@@ -32,7 +33,7 @@ class Dependency(ValueObject):
         - Contains metadata about a dependency required by a code cell.
 
     Collaborators:
-        - pythoneda.ValueObject
+        - pythoneda.shared.ValueObject
     """
 
     def __init__(self, name: str, version: str, url: str):

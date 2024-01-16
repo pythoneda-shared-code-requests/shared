@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/jupyterlab/code_execution_nix_flake.py
 
@@ -40,6 +41,7 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
     Collaborators:
         - None
     """
+
     def __init__(self, codeRequest: CodeRequest, inputs: List):
         """
         Creates a new CodeRequestNixFlake instance.
@@ -60,14 +62,15 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
             ["rydnr <github@acm-sl.org>"],
             2023,
             "rydnr",
-            "code_execution")
+            "code_execution",
+        )
 
     @classmethod
     def empty(cls):
         """
         Builds an empty instance. Required for unmarshalling.
         :return: An empty instance.
-        :rtype: pythoneda.ValueObject
+        :rtype: pythoneda.shared.code_requests.CodeExecutionNixFlake
         """
         return cls(None, [])
 
@@ -88,24 +91,28 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         :type flakeFolder: str
         """
         with open(Path(flakeFolder) / "code_request.py", "w") as output_file:
-            output_file.write('_pythoneda_no_error_so_far = True\n')
+            output_file.write("_pythoneda_no_error_so_far = True\n")
             for cell in self.code_request.cells:
                 if isinstance(cell, CodeCell):
                     # TODO: find a non-hardcoded way to prevent the script to continue
-                    output_file.write('\nif _pythoneda_no_error_so_far:')
+                    output_file.write("\nif _pythoneda_no_error_so_far:")
                     output_file.write('\n    print("```")\n')
-                    for line in [line for line in cell.contents.splitlines() if line.rstrip()]:
-                        output_file.write(f'    print({repr(line)})\n')
+                    for line in [
+                        line for line in cell.contents.splitlines() if line.rstrip()
+                    ]:
+                        output_file.write(f"    print({repr(line)})\n")
                     output_file.write('    print("```")\n')
-                    for line in [line for line in cell.contents.splitlines() if line.rstrip()]:
-                        output_file.write(f'    {line}\n')
+                    for line in [
+                        line for line in cell.contents.splitlines() if line.rstrip()
+                    ]:
+                        output_file.write(f"    {line}\n")
                 else:
                     first_time = True
                     for line in cell.contents.splitlines():
                         if first_time:
-                            output_file.write('\nif _pythoneda_no_error_so_far:')
+                            output_file.write("\nif _pythoneda_no_error_so_far:")
                             first_time = False
-                        output_file.write(f'\n    print({repr(line)})')
+                        output_file.write(f"\n    print({repr(line)})")
 
     def generate_entrypoint(self, flakeFolder: str):
         """
@@ -118,7 +125,8 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
             "EntrypointSh",
             Path(self.templates_folder()) / self.template_subfolder,
             "root",
-            "code-execution.sh")
+            "code-execution.sh",
+        )
 
     def git_add_files(self, gitAdd: GitAdd):
         """

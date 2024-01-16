@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/code_execution_request.py
 
@@ -20,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .code_request import CodeRequest
 from .code_request_nix_flake_spec import CodeRequestNixFlakeSpec
-from pythoneda import primary_key_attribute
+from pythoneda.shared import primary_key_attribute
 
 
 class CodeExecutionRequest(CodeRequest):

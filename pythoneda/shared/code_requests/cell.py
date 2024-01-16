@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/cell.py
 
@@ -19,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
-from pythoneda import primary_key_attribute, ValueObject
+from pythoneda.shared import primary_key_attribute, ValueObject
 from typing import List
 
 
@@ -35,6 +36,7 @@ class Cell(ValueObject, abc.ABC):
     Collaborators:
         - None
     """
+
     def __init__(self, contents: str):
         """
         Creates a new Cell instance.

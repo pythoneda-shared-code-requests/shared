@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/code_request.py
 
@@ -21,8 +22,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from .cell import Cell
 from .code_cell import CodeCell
 import abc
+from pythoneda.shared import attribute, ValueObject
 from pythoneda.shared.code_requests import MarkdownCell
-from pythoneda import attribute, ValueObject
 from typing import List
 
 
@@ -38,6 +39,7 @@ class CodeRequest(ValueObject, abc.ABC):
     Collaborators:
         - None
     """
+
     def __init__(self):
         """
         Creates a new CodeRequest instance.
@@ -72,7 +74,9 @@ class CodeRequest(ValueObject, abc.ABC):
         :return: Such specification.
         :rtype: pythoneda.shared.nix_flake.NixFlakeSpec
         """
-        raise NotImplementedError("nix_flake_spec() property should be implemented in subclasses")
+        raise NotImplementedError(
+            "nix_flake_spec() property should be implemented in subclasses"
+        )
 
     @abc.abstractmethod
     def write(self, file):
@@ -123,7 +127,7 @@ class CodeRequest(ValueObject, abc.ABC):
         :param varValue: The value of the attribute.
         :type varValue: int, bool, str, type
         """
-        if varName == 'cells':
+        if varName == "cells":
             self._cells = [Cell.from_dict(value) for value in varValue]
         else:
             super()._set_attribute_from_json(varName, varValue)
@@ -136,7 +140,7 @@ class CodeRequest(ValueObject, abc.ABC):
         :return: The attribute value in json format.
         :rtype: str
         """
-        if varName == 'cells':
+        if varName == "cells":
             result = [cell.to_dict() for cell in self._cells]
         else:
             result = super()._get_attribute_to_json(varName)

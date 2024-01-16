@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/code_request_nix_flake.py
 
@@ -20,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .code_request import CodeRequest
 from pathlib import Path
-from pythoneda import attribute
+from pythoneda.shared import attribute
 from pythoneda.shared.nix_flake import NixFlake
 from typing import List
 
@@ -39,19 +40,20 @@ class CodeRequestNixFlake(NixFlake):
     """
 
     def __init__(
-            self,
-            codeRequest: CodeRequest,
-            name: str,
-            version: str,
-            url: str,
-            inputs: List,
-            description: str,
-            homepage: str,
-            licenseId: str,
-            maintainers: List,
-            copyrightYear: int,
-            copyrightHolder: str,
-            templateGroup: str = "code_requests"):
+        self,
+        codeRequest: CodeRequest,
+        name: str,
+        version: str,
+        url: str,
+        inputs: List,
+        description: str,
+        homepage: str,
+        licenseId: str,
+        maintainers: List,
+        copyrightYear: int,
+        copyrightHolder: str,
+        templateGroup: str = "code_requests",
+    ):
         """
         Creates a new CodeRequestNixFlake instance.
         :param codeRequest: The code request.
@@ -90,7 +92,8 @@ class CodeRequestNixFlake(NixFlake):
             licenseId,
             maintainers,
             copyrightYear,
-            copyrightHolder)
+            copyrightHolder,
+        )
         self._code_request = codeRequest
 
     @classmethod
@@ -120,7 +123,11 @@ class CodeRequestNixFlake(NixFlake):
         :return: Such inputs.
         :rtype: List[pythoneda.shared.nix_flake.NixFlake]
         """
-        return [aux for aux in self.inputs if aux.name != "nixos" and aux.name != "flake-utils"]
+        return [
+            aux
+            for aux in self.inputs
+            if aux.name != "nixos" and aux.name != "flake-utils"
+        ]
 
     def generate_files(self, flakeFolder: str):
         """
@@ -142,7 +149,8 @@ class CodeRequestNixFlake(NixFlake):
             "PyprojecttomlTemplate",
             Path(self.templates_folder()) / self.template_subfolder,
             "root",
-            "pyprojecttoml.template")
+            "pyprojecttoml.template",
+        )
 
     def git_add_files(self, gitAdd):
         """

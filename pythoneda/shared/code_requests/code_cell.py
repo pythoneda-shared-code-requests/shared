@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 """
 pythoneda/shared/code_requests/code_cell.py
 
@@ -20,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .cell import Cell
 from .dependency import Dependency
-from pythoneda import attribute
+from pythoneda.shared import attribute
 from typing import List
 
 
@@ -76,7 +77,7 @@ class CodeCell(Cell):
         :param varValue: The value of the attribute.
         :type varValue: int, bool, str, type
         """
-        if varName == 'dependencies':
+        if varName == "dependencies":
             self._dependencies = [Dependency.from_dict(value) for value in varValue]
         else:
             super()._set_attribute_from_json(varName, varValue)
@@ -89,7 +90,7 @@ class CodeCell(Cell):
         :return: The attribute value in json format.
         :rtype: str
         """
-        if varName == 'dependencies':
+        if varName == "dependencies":
             result = [dependency.to_dict() for dependency in self._dependencies]
         else:
             result = super()._get_attribute_to_json(varName)
