@@ -31,3 +31,11 @@ from .code_request_nix_flake import CodeRequestNixFlake
 from .code_execution_request import CodeExecutionRequest
 from .code_request_nix_flake_spec import CodeRequestNixFlakeSpec
 from .code_execution_nix_flake import CodeExecutionNixFlake
+# vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
+# Local Variables:
+# mode: python
+# python-indent-offset: 4
+# tab-width: 4
+# indent-tabs-mode: nil
+# fill-column: 79
+# End:
