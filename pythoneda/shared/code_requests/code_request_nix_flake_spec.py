@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .code_request import CodeRequest
 from pythoneda.shared import attribute
-from pythoneda.shared.nix_flake import NixFlakeSpec
+from pythoneda.shared.nix.flake import NixFlakeSpec
 from typing import List
 
 
@@ -35,7 +35,7 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         - Provides conditions on Nix flakes wrapping code requests.
 
     Collaborators:
-        - pythoneda.shared.nix_flake.NixFlakeSpec
+        - pythoneda.shared.nix.flake.NixFlakeSpec
     """
 
     def __init__(
@@ -57,7 +57,7 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         :param url: The url.
         :type url: str
         :param inputSpecs: The flake specs.
-        :type inputSpecs: List[pythoneda.shared.nix_flake.NixFlakeSpec]
+        :type inputSpecs: List[pythoneda.shared.nix.flake.NixFlakeSpec]
         """
         super().__init__(name, versionSpec, url, inputSpecs)
         self._code_request = codeRequest
@@ -107,6 +107,8 @@ class CodeRequestNixFlakeSpec(NixFlakeSpec):
         else:
             result = super()._get_attribute_to_json(varName)
         return result
+
+
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:
 # mode: python

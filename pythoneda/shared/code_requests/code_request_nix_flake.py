@@ -22,7 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from .code_request import CodeRequest
 from pathlib import Path
 from pythoneda.shared import attribute
-from pythoneda.shared.nix_flake import NixFlake
+from pythoneda.shared.nix.flake import NixFlake
 from typing import List
 
 
@@ -36,7 +36,7 @@ class CodeRequestNixFlake(NixFlake):
         - Provides a way to run a code request by wrapping it in a Nix flake.
 
     Collaborators:
-        - pythoneda.shared.nix_flake.NixFlake
+        - pythoneda.shared.nix.flake.NixFlake
     """
 
     def __init__(
@@ -65,7 +65,7 @@ class CodeRequestNixFlake(NixFlake):
         :param url: The url.
         :type url: str
         :param inputs: The flake inputs.
-        :type inputs: List[pythoneda.shared.nix_flake.NixFlakeInput]
+        :type inputs: List[pythoneda.shared.nix.flake.NixFlakeInput]
         :param description: The flake description.
         :type description: str
         :param templateGroup: The template group.
@@ -121,7 +121,7 @@ class CodeRequestNixFlake(NixFlake):
         """
         Retrieves the list of package inputs, i.e., inputs besides NixOS and FlakeUtils.
         :return: Such inputs.
-        :rtype: List[pythoneda.shared.nix_flake.NixFlake]
+        :rtype: List[pythoneda.shared.nix.flake.NixFlake]
         """
         return [
             aux
@@ -195,6 +195,8 @@ class CodeRequestNixFlake(NixFlake):
         else:
             result = super()._get_attribute_to_json(varName)
         return result
+
+
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:
 # mode: python

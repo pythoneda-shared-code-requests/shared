@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from pythoneda.shared import attribute, primary_key_attribute, ValueObject
-from pythoneda.shared.nix_flake import NixFlake
+from pythoneda.shared.nix.flake import NixFlake
 
 
 class Dependency(ValueObject):
@@ -95,9 +95,11 @@ class Dependency(ValueObject):
         """
         Creates a dependency for given Nix flake.
         :param flake: The Nix flake.
-        :type flake: pythoneda.shared.nix_flake.NixFlake
+        :type flake: pythoneda.shared.nix.flake.NixFlake
         """
         return cls(flake.name, flake.version, flake.url)
+
+
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:
 # mode: python

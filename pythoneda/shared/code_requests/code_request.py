@@ -72,7 +72,7 @@ class CodeRequest(ValueObject, abc.ABC):
         """
         Retrieves the specification for the Nix flake.
         :return: Such specification.
-        :rtype: pythoneda.shared.nix_flake.NixFlakeSpec
+        :rtype: pythoneda.shared.nix.flake.NixFlakeSpec
         """
         raise NotImplementedError(
             "nix_flake_spec() property should be implemented in subclasses"
@@ -151,6 +151,8 @@ class CodeRequest(ValueObject, abc.ABC):
         Runs this code request.
         """
         pass
+
+
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:
 # mode: python

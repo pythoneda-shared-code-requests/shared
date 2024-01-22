@@ -24,7 +24,7 @@ from .code_request import CodeRequest
 from .code_request_nix_flake import CodeRequestNixFlake
 from pathlib import Path
 from pythoneda.shared.git import GitAdd
-from pythoneda.shared.nix_flake.licenses import Gpl3
+from pythoneda.shared.nix.flake.licenses import Gpl3
 from typing import List
 
 
@@ -153,6 +153,8 @@ class CodeExecutionNixFlake(CodeRequestNixFlake):
         :type gitAdd: pythoneda.shared.git.GitAdd
         """
         gitAdd.add("code-execution.sh")
+
+
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:
 # mode: python

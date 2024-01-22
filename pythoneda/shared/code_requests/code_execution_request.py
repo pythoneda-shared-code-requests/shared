@@ -70,7 +70,7 @@ class CodeExecutionRequest(CodeRequest):
         """
         Retrieves the specification for the Nix flake.
         :return: Such specification.
-        :rtype: pythoneda.shared.nix_flake.NixFlakeSpec
+        :rtype: pythoneda.shared.nix.flake.NixFlakeSpec
         """
         return CodeRequestNixFlakeSpec(self.code_request, "code-request")
 
@@ -114,6 +114,8 @@ class CodeExecutionRequest(CodeRequest):
         Runs this code request.
         """
         await self.code_request.run()
+
+
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:
 # mode: python
